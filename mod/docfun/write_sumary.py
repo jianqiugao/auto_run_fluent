@@ -70,7 +70,7 @@ def write_summary(document, run_dir,init_numm,promts):
     run.element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')
     run.font.size = docx.shared.Pt(size_1)  # 设置第一个运行的字体大小为15磅
     # 审核
-    data = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    data = datetime.datetime.now().strftime(promts['DateFormate'])
     title = document.add_paragraph(f"日期:{data}")
     run = title.runs[0]
     run.font.color.rgb = RGBColor(0, 0, 0)  # 设置文本颜色为红色
