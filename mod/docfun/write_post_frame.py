@@ -319,5 +319,4 @@ def write_post_frame(document, intial_counts, work_condition_params, order_param
     run.element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')
     run.font.size = docx.shared.Pt(size_1)  # 设置第一个运行的字体大小为15磅
     intial_counts = intial_counts + 1
-
-    pass
+    return intial_counts
