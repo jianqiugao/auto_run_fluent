@@ -56,7 +56,7 @@ run.font.name = '宋体'
 run.element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')
 run.font.size = docx.shared.Pt(10)  # 设置第一个运行的字体大小为15磅
 
-picture = document.add_picture('../../file/pic/tech_requirement.png', width=Inches(6.25))  # 设置图片宽度，inches（英尺）与cm（厘米）两种
+picture = document.add_picture('../../file/basepic/tech_requirement.png', width=Inches(6.25))  # 设置图片宽度，inches（英尺）与cm（厘米）两种
 document.paragraphs[3].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER  # 居中对齐
 
 first_second = document.add_heading("2.合同约定", level=3)
@@ -234,7 +234,7 @@ run.element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')
 run.font.size = docx.shared.Pt(10)  # 设置第一个运行的字体大小为15磅
 
 
-picture = document.add_picture('../../file/pic/3dmodel.png', width=Inches(2.25))  # 设置图片宽度，inches（英尺）与cm（厘米）两种
+picture = document.add_picture('../../file/basepic/3dmodel.png', width=Inches(2.25))  # 设置图片宽度，inches（英尺）与cm（厘米）两种
 document.paragraphs[33].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER  # 居中对齐
 
 
@@ -250,7 +250,7 @@ run.element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')
 run.font.size = docx.shared.Pt(10)  # 设置第一个运行的字体大小为15磅
 
 
-picture = document.add_picture('../../file/pic/section.png', width=Inches(4.25))  # 设置图片宽度，inches（英尺）与cm（厘米）两种
+picture = document.add_picture('../../file/basepic/section.png', width=Inches(4.25))  # 设置图片宽度，inches（英尺）与cm（厘米）两种
 document.paragraphs[35].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER  # 居中对齐
 
 
