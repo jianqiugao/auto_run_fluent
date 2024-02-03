@@ -4,7 +4,7 @@ Created on 2024/1/30 14:01
 
 @File: 读写word文档.py
 
-@Department: AI Lab, Rockontrol, Chengdu
+@Department:
 
 @Author: jianqiugao
 
