@@ -3,9 +3,10 @@ from docx.shared import RGBColor
 from docx.oxml.ns import qn  # 中文格式
 import docx
 import datetime
+from .sumary_logits import summary_logits
 
 
-def write_summary(document, run_dir,init_numm,promts):
+def write_summary(document, run_dir,init_numm,promts,press_up, temp_diff,average_press,sus_time,run_time_cost):
     size_0 = 16
     size_1 = 10
     second = document.add_heading("四、报告总结", level=2)
@@ -23,7 +24,8 @@ def write_summary(document, run_dir,init_numm,promts):
     run.element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')
     run.font.size = docx.shared.Pt(size_1)  # 设置第一个运行的字体大小为15磅
     init_numm = init_numm + 1
-    sumary = promts['promts']  # todo 增加校验函数
+    caculate_results_promts = summary_logits(press_up, temp_diff,average_press,sus_time,run_time_cost)
+    sumary = caculate_results_promts+promts['promts']  # todo 增加校验函数
     # 计算结论
     title = document.add_paragraph(f"计算结论:{sumary}")
     run = title.runs[0]

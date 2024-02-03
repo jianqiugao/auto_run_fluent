@@ -14,12 +14,20 @@ promts = _load_yaml(os.path.abspath(os.path.join(parents_path, 'config/promts.ya
 config = _load_yaml(os.path.abspath(os.path.join(parents_path, 'config/config.yaml')))
 promts.update({"DateFormate": config["DateFormate"]})
 
-work_condition_params = {'壁面参数': None, "入口参数": None, "出口参数": None, "加速度参数": None, "液位参数": None, "时间参数": None}
+work_condition_params = {'壁面参数': None, "入口参数": None, "出口参数": None, "加速度参数": None, "液位参数": None,
+                         "时间参数": None}
 order_params = {'名称参数': None, "编号参数": None}
-df = pd.DataFrame({'截面平均升压速率Pa/s': [1, 2, 3, 5]}, index=[f'截面1', '截面2', '截面3', '截面4'])
-sus_t = pd.DataFrame({'维持时间t': [1, 2, 3, 5], '初始时刻截面平均压力Pa': [1, 2, 3, 5]}, index=[f'截面1', '截面2', '截面3', '截面4'])
 
-time_cost = 12
+# -----------------------这下面逻辑有一些混乱，一定是有一些是一件事------------------------------------
+df = pd.DataFrame({'截面平均升压速率Pa/s': [1, 2, 3, 5]}, index=[f'截面1', '截面2', '截面3', '截面4'])
+sus_t = pd.DataFrame({'维持时间t': [1, 2, 3, 5], '初始时刻截面平均压力Pa': [1, 2, 3, 5]},
+                     index=[f'截面1', '截面2', '截面3', '截面4'])
+
+press_up = [0.1, 0.3, 0.5, 0.6]
+temp_diff = [0.1, 0.3, 0.5, 0.6]
+average_press = [0.1, 0.3, 0.5, 0.6]
+sus_time = 20  # 维持时间
+run_time_cost = 99
 
 
 def write_docments(run_dir: str):
@@ -28,8 +36,8 @@ def write_docments(run_dir: str):
     num = write_title(promts['title'], document)
     num = write_ref(document, num, parents_path)
     num = write_post_frame(document, num, work_condition_params, order_params, parents_path, run_dir)
-    num = write_results(document, num, df, sus_t, time_cost)
-    write_summary(document, run_dir, num, promts)
+    num = write_results(document, num, df, sus_t, run_time_cost)
+    write_summary(document, run_dir, num, promts, press_up, temp_diff, average_press, sus_time, run_time_cost)
 
     document.save(os.path.abspath(os.path.join(parents_path, f'run/{run_dir}/output_file/{run_dir}.docx')))
 
