@@ -9,6 +9,7 @@ from mod.docfun.write_ref import write_ref
 from mod.docfun.write_post_frame import write_post_frame
 from mod import parents_path
 import pandas as pd
+import numpy as np
 
 promts = _load_yaml(os.path.abspath(os.path.join(parents_path, 'config/promts.yaml')))
 config = _load_yaml(os.path.abspath(os.path.join(parents_path, 'config/config.yaml')))
@@ -22,6 +23,18 @@ order_params = {'名称参数': None, "编号参数": None}
 df = pd.DataFrame({'截面平均升压速率Pa/s': [1, 2, 3, 5]}, index=[f'截面1', '截面2', '截面3', '截面4'])
 sus_t = pd.DataFrame({'维持时间t': [1, 2, 3, 5], '初始时刻截面平均压力Pa': [1, 2, 3, 5]},
                      index=[f'截面1', '截面2', '截面3', '截面4'])
+data = np.random.random((5,20))
+gas_liquid_data = np.random.random((4,20)) # 液体质量/体积-时间，气体质量/体积-时间
+# xz 平面的温度/压力时间图
+averge_press_on_xz_clip = pd.DataFrame(data, index=[f'clip{i+1}' for i in range(data.shape[0])],columns=[f't{i}' for i in range(data.shape[1])])
+averge_temp_on_xz_clip = pd.DataFrame(data, index=[f'clip{i+1}' for i in range(data.shape[0])],columns=[f't{i}' for i in range(data.shape[1])])
+# yz 平面的温度/压力时间图
+averge_press_on_yz_clip = pd.DataFrame(data, index=[f'clip{i+1}' for i in range(data.shape[0])],columns=[f't{i}' for i in range(data.shape[1])])
+averge_temp_on_yz_clip = pd.DataFrame(data, index=[f'clip{i+1}' for i in range(data.shape[0])],columns=[f't{i}' for i in range(data.shape[1])])
+
+
+# 液体体积/质量 -时间图
+gas_liquid_time = pd.DataFrame(data=gas_liquid_data,index=['liquid_vol','liquid_mass','gas_vol','gas_mass'],columns=[f't{i}' for i in range(gas_liquid_data.shape[1])])
 
 press_up = [0.1, 0.3, 0.5, 0.6]
 temp_diff = [0.1, 0.3, 0.5, 0.6]
