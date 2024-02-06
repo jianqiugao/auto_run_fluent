@@ -32,7 +32,6 @@ averge_temp_on_xz_clip = pd.DataFrame(data, index=[f'clip{i+1}' for i in range(d
 averge_press_on_yz_clip = pd.DataFrame(data, index=[f'clip{i+1}' for i in range(data.shape[0])],columns=[f't{i}' for i in range(data.shape[1])])
 averge_temp_on_yz_clip = pd.DataFrame(data, index=[f'clip{i+1}' for i in range(data.shape[0])],columns=[f't{i}' for i in range(data.shape[1])])
 
-
 # 液体体积/质量 -时间图
 gas_liquid_time = pd.DataFrame(data=gas_liquid_data,index=['liquid_vol','liquid_mass','gas_vol','gas_mass'],columns=[f't{i}' for i in range(gas_liquid_data.shape[1])])
 
