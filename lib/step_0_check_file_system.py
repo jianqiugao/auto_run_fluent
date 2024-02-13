@@ -13,7 +13,7 @@ def make_dirs(date=None):
         file_folder_name = datetime.datetime.now().strftime(config['DateFormate'])
     else:
         file_folder_name = date.strftime(config['DateFormate'])
-    dist_dir = os.path.join(parents_path, 'run/', file_folder_name.replace('-', '_').strip(), 'output_file')
+    dist_dir = os.path.abspath(os.path.join(parents_path, 'run/', file_folder_name.replace('-', '_').replace(":","_").strip(), 'output_file'))
     os.makedirs(dist_dir, exist_ok=True)
 
 

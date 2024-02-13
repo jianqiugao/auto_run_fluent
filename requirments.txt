@@ -1,0 +1,6 @@
+pyyaml==6.0.1
+numpy==1.26.4
+pandas==2.2.0
+matplotlib==3.8.2
+Pyarrow==15.0.0
+python-docx==1.1.0
