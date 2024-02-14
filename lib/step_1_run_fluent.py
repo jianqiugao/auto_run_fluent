@@ -1,7 +1,9 @@
 from mod import parents_path
+from lib import config
+from mod.fluntapi.fluentapi import initial_fluent, read_mesh_or_case, define_boundary_and_models
 
-# import ansys.fluent.core as pyfluent
-
+import time
+# import ansys.fluent.core as pyfluent\
 # session = pyfluent.launch_fluent()
 # print(session.__dict__)
 # # session.check_health()
@@ -25,17 +27,21 @@ import math
 import pandas as pd
 import numpy as np
 
-#读取参数配置文件的数据
-data_all=[]
+# 读取参数配置文件的数据
+t1 = time.perf_counter()
+data_all = []
 # with open('data.csv','r',encoding='utf-8') as f:
 #     reader = csv.DictReader(f)
 #     for row in reader:
 #         data_all.append(row)
 
-solver = pyfluent.launch_fluent(version="3d", precision="double",processor_count=4, show_gui=True, mode="solver")
-import_filename = "chao54-DUIBI01417.cas"
+solver = initial_fluent(config)
+
+import_filename = "../run/20240201_215030/fluent_data/chao54-DUIBI.msh"
+read_mesh_or_case(import_filename, solver)
+define_boundary_and_models(config, solver)
 # solver.tui.solve.report_definitions.add('bbb','lift','thread-names', 'wing_up','wing_down','()','force-vector','0.2', '0.6')
-solver.file.read(file_type="case", file_name=import_filename)
+# solver.file.read(file_type="case", file_name=import_filename)
 
 # #定义残差检测
 # solver.tui.solve.monitors.residual.check_convergence('yes','no','no','no','no','no')
@@ -44,4 +50,7 @@ solver.file.read(file_type="case", file_name=import_filename)
 # solver.tui.solve.monitors.residual.plot("yes")
 # solver.tui.solve.monitors.residual.print("yes")
 
-solver.solution.run_calculation.iterate(iter_count=20)
+# solver.solution.run_calculation.iterate(iter_count=5)
+t2 = time.perf_counter()
+
+print("用时", t2 - t1, "s")
