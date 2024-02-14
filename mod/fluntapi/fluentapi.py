@@ -47,6 +47,26 @@ def define_boundary_and_models(config, solver):
     solver.setup.materials.fluid['air'].critical_volume.value = config['critical_volume']
     solver.setup.materials.fluid['air'].acentric_factor.value = config['acentric_factor']
 
+    walls = solver.setup.boundary_conditions.wall.get_object_names()
+
+    solver.setup.boundary_conditions.wall['wall-feng-l'].q.value = 1.5
+    solver.setup.boundary_conditions.wall['wall-feng-l:004'].q.value = 1.5
+    solver.setup.boundary_conditions.wall['wall-feng-r'].q.value = 1.5
+    solver.setup.boundary_conditions.wall['wall-inpipe'].q.value = 0.45
+    solver.setup.boundary_conditions.wall['wall-l'].q.value = 1.5
+    solver.setup.boundary_conditions.wall['wall-outpipe-inner'].q.value = 0.45
+
+    solver.setup.boundary_conditions.wall['wall-pipe-outter'].q.value = 0.45
+    solver.setup.boundary_conditions.wall['wall-pipe-top'].q.value = 0.45
+    solver.setup.boundary_conditions.wall['wall-r'].q.value = 1.5
+
+
+
+
+
+
+
+
 
     print('hello')
 
