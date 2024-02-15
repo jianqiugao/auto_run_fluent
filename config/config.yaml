@@ -3,13 +3,13 @@ file_must_exist: []
 fluent_version: "3d"
 precision: "double"
 processor_count: 4
-show_gui: True
+show_gui: False
 mode: "solver"
 energy_equation: True
 viscous: 'sst'
 gravity: True
 gravity_value: [0,-9.8,0]
-time : 'unsteady-2nd-order-bounded' # ['steady', 'unsteady-1st-order', 'unsteady-2nd-order', 'unsteady-2nd-order-bounded']
+time : 'unsteady-1st-order' # ['steady', 'unsteady-1st-order', 'unsteady-2nd-order', 'unsteady-2nd-order-bounded']
 cp: {'num':4,'minimum':[5,6.6,12.6,52.6],'maximum':[6.6,12.6,52.6,310],'number_of_coefficients':[3,4,4,1],'coefficients':[[424435,-159052,15142],[135749,-36618,3440.7,-107.4],[7136.4,-142.41,3.5527,-0.0292],[5195]]}
 thermal_conductivity : 0.152
 viscosity : 1.99e-05
@@ -20,3 +20,14 @@ critical_temperature : 5.3
 critical_pressure : 229000
 critical_volume: 0.014441
 acentric_factor: -0.39
+
+wall-feng-l: 1.5
+wall-feng-l:004: 1.5
+wall-feng-r: 1.5
+wall-inpipe: 0.45
+wall-l: 1.5
+wall-outpipe-inner: 0.45
+
+wall-pipe-outter: 0.45
+wall-pipe-top : 0.45
+wall-r: 1.5

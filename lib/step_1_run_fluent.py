@@ -30,11 +30,6 @@ import numpy as np
 # 读取参数配置文件的数据
 t1 = time.perf_counter()
 data_all = []
-# with open('data.csv','r',encoding='utf-8') as f:
-#     reader = csv.DictReader(f)
-#     for row in reader:
-#         data_all.append(row)
-
 solver = initial_fluent(config)
 
 import_filename = "../run/20240201_215030/fluent_data/chao54-DUIBI.msh"
