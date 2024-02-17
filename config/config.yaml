@@ -2,8 +2,8 @@ DateFormate: '%Y-%m-%d %H:%M:%S'
 file_must_exist: []
 fluent_version: "3d"
 precision: "double"
-processor_count: 4
-show_gui: False
+processor_count: 6
+show_gui: True
 mode: "solver"
 energy_equation: True
 viscous: 'sst'
@@ -31,3 +31,7 @@ wall-outpipe-inner: 0.45
 wall-pipe-outter: 0.45
 wall-pipe-top : 0.45
 wall-r: 1.5
+
+initial_press : 420000
+time_step_count: 10
+time_step_size: 0.1

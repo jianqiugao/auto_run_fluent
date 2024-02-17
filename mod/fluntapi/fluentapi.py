@@ -1,5 +1,5 @@
 import os
-import re
+import numpy as np
 import ansys.fluent.core as pyfluent
 from ansys.fluent.core.solver.settings_231.piecewise_polynomial_child import piecewise_polynomial_child, minimum_cls, \
     maximum_cls, number_of_coefficients_cls, coefficients_cls
@@ -12,6 +12,8 @@ def initial_fluent(config):
                                     show_gui=config["show_gui"], mode=config["mode"])
     return solver
 
+
+# /display/hardcopy pressure_contour-123.jpg
 
 def read_mesh_or_case(path: str, solver):
     if path.endswith('msh'):
@@ -67,7 +69,7 @@ def define_boundary_and_models(config, solver):
     para_dict = config['cp']
     solver.setup.materials.fluid['air'].specific_heat.option = 'piecewise-polynomial'
     solver.setup.materials.fluid['air'].specific_heat.piecewise_polynomial.resize(para_dict['num'])
-    # solver.tui.define("operating_conditions","operating_density?",'yes',"0.1")
+    solver.execute_tui('define/operating-conditions/operating-density? yes 0')
 
     for i in range(para_dict['num']):
         solver.setup.materials.fluid['air'].specific_heat.piecewise_polynomial[i].minimum = para_dict['minimum'][i]
@@ -99,8 +101,55 @@ def define_boundary_and_models(config, solver):
     solver.setup.boundary_conditions.wall['wall-pipe-top'].q.value = config['wall-pipe-top']
     solver.setup.boundary_conditions.wall['wall-r'].q.value = config['wall-r']
     solver.setup.reference_values.zone = 'tankgas'
+    return walls
 
 
-def define_data_query():
-    pass
+def initial_and_calculate(config, solver,coordinate_content):
+    solver.solution.initialization.set_defaults['pressure'] = config['initial_press']
+    solver.solution.initialization.standard_initialize()
+    solver.solution.run_calculation.transient_controls.time_step_count = config['time_step_count']
+    solver.solution.run_calculation.transient_controls.time_step_size = config['time_step_size']
+
+    # 获取关键时刻的数据，也就是做几个切面然后再把每个切面上的压力这些给统计一下
+    # 统计yz平面
+    num_of_plane = 6
+    space_x = (coordinate_content['max_x'] - coordinate_content['min_x']) / num_of_plane
+    space_x = np.linspace(coordinate_content['min_x'] + space_x, coordinate_content['max_x'] - space_x,
+                          num_of_plane).tolist()
+    for num, item in enumerate(space_x):
+        solver.tui.surface.iso_surface("x-coordinate", f"xclip{num}", (), "fluid-1", (), f"{item}", (), 'q')
+        # 定义这个切面的类型
+        # solver.solution.report_definitions.surface[f'xclip{num}'].report_type = "surface_facetavg"
+        # solver.solution.report_definitions.surface[f'xclip{num}'] = {"field": "pressure",
+        #                                                                     "surface_names": [f"xclip{num}"]}
+
+        solver.tui.solve.report_definitions.add(f"xclip{num}", "surface-areaavg", "field", "pressure",
+                                                "surface-names", [f"xclip{num}"], "q")
+        # # 定义这个切面的文件
+    solver.solution.monitor.report_files[f'xclip_file'] = {"report_defs": [f'xclip{i}' for i in range(len(space_x))]}
+    solver.solution.monitor.report_files[f'xclip_file'].file_name = "xclip_file.out"
+    # 统计xz平面
+    space_y = (coordinate_content['max_y'] - coordinate_content['min_y']) / num_of_plane
+    space_y = np.linspace(coordinate_content['min_y'] + space_y, coordinate_content['max_y'] - space_y,
+                          num_of_plane).tolist()
+    for num, item in enumerate(space_y):
+        solver.tui.surface.iso_surface("y-coordinate", f"yclip{num}", (), "fluid-1", (), f"{item}", (), 'q')
+        solver.tui.solve.report_definitions.add(f"yclip{num}", "surface-areaavg", "field", "pressure",
+                                                "surface-names", [f"yclip{num}"], "q")
+    solver.solution.monitor.report_files[f'yclip_file'] = {"report_defs": [f'yclip{i}' for i in range(len(space_y))]}
+    solver.solution.monitor.report_files[f'yclip_file'].file_name="yclip_file.out"
+    # solver.tui.file
+    solver.solution.run_calculation.calculate()
+
+
+def define_data_query_and_post(config, solver, coordinate_content, walls,parents_path,run_dir):
+    solver.results.graphics.contour['contour-temp'] = {"field": "pressure",
+                                                       "surfaces_list": walls}
+    solver.results.graphics.contour['contour-temp'].display()
+    picture = os.path.abspath(os.path.join(parents_path, f'run/{run_dir}/last_pre_conture.png'))
+    # 保存最后一个时刻的压力云图
+    if os.path.exists(picture):
+        os.remove(picture)
+    solver.tui.display.save_picture(picture)
+    print('hello')
 
