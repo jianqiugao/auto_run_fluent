@@ -123,21 +123,33 @@ def initial_and_calculate(config, solver,coordinate_content):
         # solver.solution.report_definitions.surface[f'xclip{num}'] = {"field": "pressure",
         #                                                                     "surface_names": [f"xclip{num}"]}
 
-        solver.tui.solve.report_definitions.add(f"xclip{num}", "surface-areaavg", "field", "pressure",
+        solver.tui.solve.report_definitions.add(f"xclip{num}_pre", "surface-areaavg", "field", "pressure",
+                                                "surface-names", [f"xclip{num}"], "q")
+        solver.tui.solve.report_definitions.add(f"xclip{num}_temp", "surface-areaavg", "field", "temperature",
                                                 "surface-names", [f"xclip{num}"], "q")
         # # 定义这个切面的文件
-    solver.solution.monitor.report_files[f'xclip_file'] = {"report_defs": [f'xclip{i}' for i in range(len(space_x))]}
-    solver.solution.monitor.report_files[f'xclip_file'].file_name = "xclip_file.out"
+    solver.solution.monitor.report_files[f'xclip_file_pre'] = {"report_defs": [f'xclip{i}_pre' for i in range(len(space_x))]}
+    solver.solution.monitor.report_files[f'xclip_file_pre'].file_name = "xclip_file_pre.out"
+
+    solver.solution.monitor.report_files[f'xclip_file_temp'] = {"report_defs": [f'xclip{i}_temp' for i in range(len(space_x))]}
+    solver.solution.monitor.report_files[f'xclip_file_temp'].file_name = "xclip_file_temp.out"
+
     # 统计xz平面
     space_y = (coordinate_content['max_y'] - coordinate_content['min_y']) / num_of_plane
     space_y = np.linspace(coordinate_content['min_y'] + space_y, coordinate_content['max_y'] - space_y,
                           num_of_plane).tolist()
     for num, item in enumerate(space_y):
         solver.tui.surface.iso_surface("y-coordinate", f"yclip{num}", (), "fluid-1", (), f"{item}", (), 'q')
-        solver.tui.solve.report_definitions.add(f"yclip{num}", "surface-areaavg", "field", "pressure",
+        solver.tui.solve.report_definitions.add(f"yclip{num}_pre", "surface-areaavg", "field", "pressure",
                                                 "surface-names", [f"yclip{num}"], "q")
-    solver.solution.monitor.report_files[f'yclip_file'] = {"report_defs": [f'yclip{i}' for i in range(len(space_y))]}
-    solver.solution.monitor.report_files[f'yclip_file'].file_name="yclip_file.out"
+        solver.tui.solve.report_definitions.add(f"yclip{num}_temp", "surface-areaavg", "field", "temperature",
+                                                "surface-names", [f"yclip{num}"], "q")
+
+    solver.solution.monitor.report_files[f'yclip_file_pre'] = {"report_defs": [f'yclip{i}_pre' for i in range(len(space_y))]}
+    solver.solution.monitor.report_files[f'yclip_file_pre'].file_name="yclip_file_pre.out"
+
+    solver.solution.monitor.report_files[f'yclip_file_temp'] = {"report_defs": [f'yclip{i}_temp' for i in range(len(space_y))]}
+    solver.solution.monitor.report_files[f'yclip_file_temp'].file_name = "yclip_file_temp.out"
     # solver.tui.file
     solver.solution.run_calculation.calculate()
 
