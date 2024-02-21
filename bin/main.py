@@ -12,9 +12,9 @@ work_condition_params = {'壁面参数': None, "入口参数": None, "出口参�
 order_params = {'名称参数': None, "编号参数": None}
 
 
-def main(date, run_dir, mesh, gas_liquid_time):
-    make_dirs(date=date)
-    # run_time_cost = run_fluent_get_picture_and_data(run_dir, mesh)
+def main(date, mesh, gas_liquid_time):
+    run_dir = make_dirs(date=date)
+    run_time_cost = run_fluent_get_picture_and_data(run_dir, mesh)
     averge_press_on_xz_clip, averge_temp_on_xz_clip, averge_press_on_yz_clip, averge_temp_on_yz_clip = fluent_data_to_pandas()
     draw_picture_by_fluent_data(averge_press_on_xz_clip,
                                 averge_temp_on_xz_clip,
@@ -39,16 +39,14 @@ def main(date, run_dir, mesh, gas_liquid_time):
     sus_t = pd.DataFrame(data=data, index=index)
     temp_diff = averge_temp_on_yz_clip.iloc[:, -1].values.tolist()  # 最后一个时刻的温度
     average_press = averge_press_on_yz_clip.iloc[:, -1].values.tolist()  # 最后一个时刻的压力
-    run_time_cost = 1920
     write_docments(run_dir, work_condition_params, order_params, pressure_up_rate, sus_t, run_time_cost, temp_diff, average_press)
 
 
 if __name__ == '__main__':
     date = datetime.datetime(year=2024, month=2, day=12, hour=12, minute=10, second=20)
-    run_dir = '20240201_215030'
     mesh = "../run/20240201_215030/fluent_data/chao54-DUIBI.msh"
     # 液体体积/质量 -时间图
     gas_liquid_data = np.random.random((4, 20))  # 液体质量/体积-时间，气体质量/体积-时间
     gas_liquid_time = pd.DataFrame(data=gas_liquid_data, index=['liquid_vol', 'liquid_mass', 'gas_vol', 'gas_mass'],
                                    columns=[f't{i}' for i in range(gas_liquid_data.shape[1])])
-    main(date, run_dir=run_dir, mesh=mesh, gas_liquid_time=gas_liquid_time)
+    main(date, mesh=mesh, gas_liquid_time=gas_liquid_time)
