@@ -29,7 +29,7 @@ def run_fluent_get_picture_and_data(run_dir, import_filename):
     initial_and_calculate(config, solver, coordinate_content)
     define_data_query_and_post(config, solver, coordinate_content, walls, parents_path, run_dir)
     t2 = time.perf_counter()
-    print("用时", t2 - t1, "s")
+    return t2-t1
 
 
 def fluent_data_to_pandas():

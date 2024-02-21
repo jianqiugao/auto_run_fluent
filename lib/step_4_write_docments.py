@@ -9,17 +9,18 @@ from mod.docfun.write_ref import write_ref
 from mod.docfun.write_post_frame import write_post_frame
 from mod import parents_path
 import pandas as pd
-import numpy as np
+from lib import config
 
 promts = _load_yaml(os.path.abspath(os.path.join(parents_path, 'config/promts.yaml')))
-config = _load_yaml(os.path.abspath(os.path.join(parents_path, 'config/config.yaml')))
+# config = _load_yaml(os.path.abspath(os.path.join(parents_path, 'config/config.yaml')))
 promts.update({"DateFormate": config["DateFormate"]})
 
 
 
-def write_docments(run_dir: str,work_condition_params,pressure_up_rate,sus_t):
+def write_docments(run_dir: str,work_condition_params,order_params,pressure_up_rate,sus_t,run_time_cost,temp_diff,average_press):
     # 创建一个新的Word文档对象
     sus_time = sus_t['维持时间t'].mean()
+    press_up = pressure_up_rate['截面平均升压速率Pa/s'].values.tolist()
     document = Document()
     num = write_title(promts['title'], document)
     num = write_ref(document, num, parents_path)
@@ -53,15 +54,17 @@ if __name__ == '__main__':
     #
     # # =======================》由前面的参数计算得到 todo
     pressure_up_rate = pd.DataFrame({'截面平均升压速率Pa/s': [1, 2, 3, 5]}, index=[f'截面1', '截面2', '截面3', '截面4'])
-    sus_t = pd.DataFrame({'维持时间t': [1, 2, 3, 5], '初始时刻截面平均压力Pa': [1, 2, 3, 5]},
-                         index=[f'截面1', '截面2', '截面3', '截面4'])
+    sus_t = pd.DataFrame({'维持时间t': [1, 2, 3, 5,55], '初始时刻截面平均压力Pa': [1, 2, 3, 5,55]},
+                         index=[f'截面1', '截面2', '截面3', '截面4','截面5'])
     #
     # # 液体体积/质量 -时间图
     #
     # press_up = [0.1, 0.3, 0.5, 0.6]
-    # temp_diff = [0.1, 0.3, 0.5, 0.6]
-    # average_press = [0.1, 0.3, 0.5, 0.6]
-    # sus_time = 20  # 维持时间
+    temp_diff = [0.1, 0.3, 0.5, 0.6]
+    average_press = [0.1, 0.3, 0.5, 0.6]
+
     run_time_cost = 99
 
-    write_docments('20240201_215030',work_condition_params,pressure_up_rate,sus_t,run_time_cost)
+    # sus_time = 20  # 维持时间 不再需要
+
+    write_docments('20240201_215030',work_condition_params,order_params,pressure_up_rate,sus_t,run_time_cost,temp_diff,average_press)
