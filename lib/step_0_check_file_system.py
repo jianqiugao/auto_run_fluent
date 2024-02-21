@@ -13,11 +13,11 @@ def make_dirs(date=None):
         file_folder_name = datetime.datetime.now().strftime(config['DateFormate'])
     else:
         file_folder_name = date.strftime(config['DateFormate'])
-    dist_dir = os.path.abspath(os.path.join(parents_path, 'run/', file_folder_name.replace('-', '_').replace(":","_").strip(), 'output_file'))
+    dist_dir = os.path.abspath(os.path.join(parents_path, 'run/', file_folder_name.replace('-', '_').replace(":","_").replace(" ","_").strip(), 'output_file'))
     os.makedirs(dist_dir, exist_ok=True)
-    dist_dir = os.path.abspath(os.path.join(parents_path, 'run/', file_folder_name.replace('-', '_').replace(":", "_").strip(), 'fluent_data'))
+    dist_dir = os.path.abspath(os.path.join(parents_path, 'run/', file_folder_name.replace('-', '_').replace(":", "_").replace(" ","_").strip(), 'fluent_data'))
     os.makedirs(dist_dir, exist_ok=True)
-    return file_folder_name.replace('-', '_').replace(":","_").strip()
+    return file_folder_name.replace('-', '_').replace(":","_").replace(" ","_").strip()
 
 if __name__ == '__main__':
     date = datetime.datetime(year=2024, month=1, day=12, hour=12, minute=10, second=20)

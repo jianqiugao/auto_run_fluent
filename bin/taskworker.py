@@ -10,7 +10,8 @@ app = FastAPI()
 gas_liquid_data = np.random.random((4, 20))  # 液体质量/体积-时间，气体质量/体积-时间
 gas_liquid_time = pd.DataFrame(data=gas_liquid_data, index=['liquid_vol', 'liquid_mass', 'gas_vol', 'gas_mass'],
                                columns=[f't{i}' for i in range(gas_liquid_data.shape[1])])
-date = datetime.datetime(year=2024, month=2, day=12, hour=12, minute=10, second=20)
+# date = datetime.datetime(year=2024, month=2, day=12, hour=12, minute=10, second=20)
+date = datetime.datetime.now()
 mesh = "../run/20240201_215030/fluent_data/chao54-DUIBI.msh"
 @app.get("/")
 async def root():

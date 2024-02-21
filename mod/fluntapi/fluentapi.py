@@ -163,5 +163,6 @@ def define_data_query_and_post(config, solver, coordinate_content, walls,parents
     if os.path.exists(picture):
         os.remove(picture)
     solver.tui.display.save_picture(picture)
-    print('hello')
+    print('save_picture')
+    print(picture)
 
