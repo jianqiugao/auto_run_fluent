@@ -7,6 +7,7 @@ from lib.step_1_run_fluent import run_fluent_get_picture_and_data, fluent_data_t
 from lib.step_3_draw_picture import draw_picture_by_fluent_data
 from lib.step_4_write_docments import write_docments
 
+
 work_condition_params = {'壁面参数': None, "入口参数": None, "出口参数": None, "加速度参数": None, "液位参数": None,
                          "时间参数": None}
 order_params = {'名称参数': None, "编号参数": None}

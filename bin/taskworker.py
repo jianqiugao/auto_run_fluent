@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 import datetime
 from main import main
+from mod.tools.clean_dir import clean_dir
 
 app = FastAPI()
 gas_liquid_data = np.random.random((4, 20))  # 液体质量/体积-时间，气体质量/体积-时间
@@ -15,6 +16,8 @@ date = datetime.datetime.now()
 mesh = "../run/20240201_215030/fluent_data/chao54-DUIBI.msh"
 @app.get("/")
 async def root():
+    clean_dir('.','out')
+    clean_dir('.', 'trn')
     main(date, mesh=mesh, gas_liquid_time=gas_liquid_time)
 
     return {"message": "计算完成了"}
