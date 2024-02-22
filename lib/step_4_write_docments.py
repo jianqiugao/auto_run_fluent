@@ -67,4 +67,4 @@ if __name__ == '__main__':
 
     # sus_time = 20  # 维持时间 不再需要
 
-    write_docments('2024_02_22_22_11_07',work_condition_params,order_params,pressure_up_rate,sus_t,run_time_cost,temp_diff,average_press)
+    write_docments('2024_02_22_22_22_22',work_condition_params,order_params,pressure_up_rate,sus_t,run_time_cost,temp_diff,average_press)

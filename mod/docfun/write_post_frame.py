@@ -1,4 +1,5 @@
 import os.path
+import time
 
 import docx
 from docx.shared import RGBColor
@@ -302,12 +303,16 @@ def write_post_frame(document, intial_counts, work_condition_params, order_param
     run.element.rPr.rFonts.set(qn('w:eastAsia'), u'宋体')
     run.font.size = docx.shared.Pt(size_1)  # 设置第一个运行的字体大小为15磅
     intial_counts = intial_counts + 1
-    if not os.path.exists(os.path.abspath(os.path.join(parent_path, f'run/{run_dir}/last_liquid_level_conture.png'))):
+    picture_path = os.path.abspath(os.path.join(parent_path, f'run/{run_dir}/last_liquid_level_conture.png'))
+    if not os.path.exists(picture_path):
         backup_file = str(os.path.abspath(os.path.join(parent_path, f'file/basepic/backup.png')))
-        os.popen(f"copy {backup_file} {os.path.abspath(os.path.join(parent_path, f'run/{run_dir}/last_liquid_level_conture.png'))}")
+        os.popen(f"copy {backup_file} {picture_path}")
 
-    picture = document.add_picture(os.path.abspath(os.path.join(parent_path, f'run/{run_dir}/last_liquid_level_conture.png')),
-                                   width=Inches(3.25))  # 设置图片宽度，inches（英尺）与cm（厘米）两种
+    if not os.path.exists(picture_path):
+        time.sleep(0.5)
+
+    picture = document.add_picture(picture_path,width=Inches(3.25))  # 设置图片宽度，inches（英尺）与cm（厘米）两种
+
     document.paragraphs[intial_counts].alignment = WD_PARAGRAPH_ALIGNMENT.CENTER  # 居中对齐
     # 截面平均压力/温度——时间图
     # 添加标题

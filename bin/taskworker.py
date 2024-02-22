@@ -17,7 +17,7 @@ mesh = "../run/20240201_215030/fluent_data/chao54-DUIBI.msh"
 async def root():
     main(date, mesh=mesh, gas_liquid_time=gas_liquid_time)
 
-    return {"message": "计算完成吗"}
+    return {"message": "计算完成了"}
 
 
 if __name__ == '__main__':
