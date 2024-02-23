@@ -1,11 +1,12 @@
 # 主要是生成指定的文件夹
 import os
 import datetime
+from lib import config
 
 from mod import parents_path
-from mod.tools.read_config import _load_yaml
+# from mod.tools.read_config import _load_yaml
 
-config = _load_yaml(os.path.abspath(os.path.join(parents_path, 'config/config.yaml')))
+# config = _load_yaml(os.path.abspath(os.path.join(parents_path, 'config/config.yaml')))
 
 
 def make_dirs(date=None):
