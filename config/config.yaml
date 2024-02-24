@@ -3,7 +3,7 @@ file_must_exist: []
 fluent_version: "3d"
 precision: "double"
 processor_count: 6
-show_gui: True
+show_gui: False
 mode: "solver"
 energy_equation: True
 viscous: 'sst'

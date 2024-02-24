@@ -11,6 +11,7 @@ import os
 
 from main import main
 from mod.tools.clean_dir import clean_dir
+from lib import config,promts
 
 
 class Params(BaseModel):
@@ -44,6 +45,7 @@ class Params(BaseModel):
     wall_pipe_top: float = 0.45
     wall_r: float = 1.5
 
+
 app = FastAPI()
 gas_liquid_data = np.random.random((4, 20))  # 液体质量/体积-时间，气体质量/体积-时间
 gas_liquid_time = pd.DataFrame(data=gas_liquid_data, index=['liquid_vol', 'liquid_mass', 'gas_vol', 'gas_mass'],
@@ -53,25 +55,28 @@ date = datetime.datetime.now()
 mesh = "../run/20240201_215030/fluent_data/chao54-DUIBI.msh"
 
 
+
+
 @app.post('/runfluent/', description='')
 async def runfluent(params: Params):
     print(params.dict())
+    config.update(params.dict())
     if os.path.exists('run_status.csv'):
-        print("读取文件")
         run_status = pd.read_csv('run_status.csv')
     else:
-        run_status = pd.DataFrame(columns=["start_time","end_time","running_status"]) # run_status
-        run_status.to_csv("run_status.csv",index=False)
-    if len(run_status)!=0:
-        print(run_status.iloc[-1, -1])
-        if run_status.iloc[-1,-1]== "running":
-            return {"message": "上次计算未完成"}
+        run_status = pd.DataFrame(columns=["start_time", "end_time", "running_status"])  # run_status
+        run_status.to_csv("run_status.csv", index=False)
+    if len(run_status) != 0:
+        print("上一步计算状态", run_status.iloc[-1, -1])
+        if run_status.iloc[-1, -1] == "running":
+            return {"message": "上次计算未完成请等待并不要重复提交"}
     run_status.loc[len(run_status)] = [datetime.datetime.now(), "", "running"]
     run_status.to_csv("./run_status.csv", index=False)
-    # clean_dir('.', 'out')
-    # clean_dir('.', 'trn')
-    # main(date, mesh=mesh, gas_liquid_time=gas_liquid_time)
-    run_status.loc[len(run_status)-1,["end_time","running_status"]] = [datetime.datetime.now(),"finished"]
+    # time.sleep(60)
+    clean_dir('.', 'out')
+    clean_dir('.', 'trn')
+    main(date, mesh=mesh, gas_liquid_time=gas_liquid_time)
+    run_status.loc[len(run_status) - 1, ["end_time", "running_status"]] = [datetime.datetime.now(), "finished"]
     run_status.to_csv("./run_status.csv", index=False)
 
     return {"message": "计算完成了"}
