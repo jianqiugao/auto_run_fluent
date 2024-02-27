@@ -12,7 +12,7 @@ import subprocess
 
 from main import main
 from mod.tools.clean_dir import clean_dir
-from lib import config,promts,parents_path
+from lib import config, promts, parents_path
 
 
 class Params(BaseModel):
@@ -46,11 +46,12 @@ class Params(BaseModel):
     wall_pipe_top: float = 0.45
     wall_r: float = 1.5
 
+
 class GeoParams(BaseModel):
-    Save_Path:str =  "C:/Users/tianp/Desktop/show"
+    Save_Path: str = "C:/Users/tianp/Desktop/show"
     radius: float = 4600
     The_radius_of_the_left_fillet_of_the_transition_segment: float = 460
-    The_radius_of_the_right_fillet_of_the_transition_segment: float =460
+    The_radius_of_the_right_fillet_of_the_transition_segment: float = 460
     Total_length_of_barrel_including_head: float = 15000
     Barrel_diameter: float = 4600
     Bore_diameter: float = 311
@@ -60,18 +61,18 @@ class GeoParams(BaseModel):
     Outer_diameter_of_the_return_tube: float = 90
     Return_tube_length: float = 7940
     Return_pipe_elbow_radius: float = 100
-    Return_tube_jacking_length: float =100
+    Return_tube_jacking_length: float = 100
     Intake_pipe_coordinates: str = "-1800 -200"
-    Inner_diameter_of_the_inlet_pipe: float =43.1
+    Inner_diameter_of_the_inlet_pipe: float = 43.1
     Outer_diameter_of_the_intake_tube: float = 50.1
-    Intake_pipe_length: float= 5700
+    Intake_pipe_length: float = 5700
     The_height_of_the_anti_wave_plate: float = 400
     Thickness_of_the_wave_proof_plate: float = 8
     Diameter_of_the_inner_hole_of_the_wave_protection_plate: float = 800
     Boss_height: float = 39
     Cone_outer_diameter: float = 2000
     Inner_ring_diameter: float = 3800
-    Incision_height_one_side: float =900
+    Incision_height_one_side: float = 900
     Position_of_the_shield_plate: float = 3560
     Boss_direction: float = 180
     Spherical_radius_of_the_left_head_of_the_shell: float = 4716
@@ -97,8 +98,6 @@ date = datetime.datetime.now()
 mesh = "../run/20240201_215030/fluent_data/chao54-DUIBI.msh"
 
 
-
-
 @app.post('/runfluent/', description='')
 async def runfluent(params: Params):
     print(params.dict())
@@ -122,6 +121,8 @@ async def runfluent(params: Params):
     run_status.to_csv("./run_status.csv", index=False)
 
     return {"message": "计算完成了"}
+
+
 @app.post('/txt/', description='')
 async def runfluent(params: GeoParams):
     data = params.dict()
@@ -131,10 +132,10 @@ async def runfluent(params: GeoParams):
             line_content = str(key) + ":" + " " + str(data[key]) + "\n"
             f.write(line_content)
     bat_file = f'{parents_path}/file/wang/spaceclaim_meshing.bat'
-    result = subprocess.run(["cmd", "/c", bat_file], capture_output=True)
-    print(result)
-
-
+    # result = subprocess.run(["cmd", "/c", bat_file], capture_output=True)
+    # print(result)
+    os.system(bat_file)
+    return {"message": "几何生成成功"}
 
 
 if __name__ == '__main__':
