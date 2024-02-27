@@ -3,7 +3,7 @@ file_must_exist: []
 fluent_version: "3d"
 precision: "double"
 processor_count: 6
-show_gui: False
+show_gui: True
 mode: "solver"
 energy_equation: True
 viscous: 'sst'
@@ -33,6 +33,7 @@ wall-pipe-top : 0.45
 wall-r: 1.5
 
 initial_press : 420000
+initial_temperature : 300
 time_step_count: 10
 time_step_size: 0.1
 sus_p: 4200005

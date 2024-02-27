@@ -106,6 +106,7 @@ def define_boundary_and_models(config, solver):
 
 def initial_and_calculate(config, solver,coordinate_content):
     solver.solution.initialization.set_defaults['pressure'] = config['initial_press']
+    solver.solution.initialization.set_defaults['temperature'] = config['initial_temperature']
     solver.solution.initialization.standard_initialize()
     solver.solution.run_calculation.transient_controls.time_step_count = config['time_step_count']
     solver.solution.run_calculation.transient_controls.time_step_size = config['time_step_size']
