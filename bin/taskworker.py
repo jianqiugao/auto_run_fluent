@@ -45,6 +45,47 @@ class Params(BaseModel):
     wall_pipe_top: float = 0.45
     wall_r: float = 1.5
 
+class GeoParams(BaseModel):
+    Save_Path:str =  "C:/Users/tianp/Desktop/show"
+    radius: float = 4600
+    The_radius_of_the_left_fillet_of_the_transition_segment: float = 460
+    The_radius_of_the_right_fillet_of_the_transition_segment: float =460
+    Total_length_of_barrel_including_head: float = 15000
+    Barrel_diameter: float = 4600
+    Bore_diameter: float = 311
+    Inner_bore_length: float = 2500
+    Return_trachea_coordinates: str = "1800 500"
+    Inner_diameter_of_the_return_tube: float = 70
+    Outer_diameter_of_the_return_tube: float = 90
+    Return_tube_length: float = 7940
+    Return_pipe_elbow_radius: float = 100
+    Return_tube_jacking_length: float =100
+    Intake_pipe_coordinates: str = "-1800 -200"
+    Inner_diameter_of_the_inlet_pipe: float =43.1
+    Outer_diameter_of_the_intake_tube: float = 50.1
+    Intake_pipe_length: float= 5700
+    The_height_of_the_anti_wave_plate: float = 400
+    Thickness_of_the_wave_proof_plate: float = 8
+    Diameter_of_the_inner_hole_of_the_wave_protection_plate: float = 800
+    Boss_height: float = 39
+    Cone_outer_diameter: float = 2000,
+    Inner_ring_diameter: float = 3800,
+    Incision_height_one_side: float =900,
+    Position_of_the_shield_plate: float = 3560,
+    Boss_direction: float = 180,
+    Spherical_radius_of_the_left_head_of_the_shell: float = 4716,
+    Spherical_spherical_center_of_the_left_head_of_the_shell: float = 100,
+    Spherical_radius_of_the_right_head_of_the_shell: float = 4716,
+    Spherical_spherical_center_of_the_right_head_of_the_shell: float = 200,
+    The_left_head_of_the_housing_is_over_rounded_with_a_corner_radius: float = 491,
+    The_right_head_of_the_housing_is_over_fillet_radius: float = 491,
+    Thickness_of_the_shell_barrel_straight_pipe_section: float = 8,
+    The_minimum_size_of_the_polygon_mesh: float = 1,
+    The_maximum_size_of_the_polygon_mesh: float = 40,
+    The_number_of_layers_of_boundaries: float = 5,
+    The_height_of_the_first_layer_of_the_boundary_layer: float = 0.5,
+    The_maximum_size_of_the_volume_mesh: float = 40
+
 
 app = FastAPI()
 gas_liquid_data = np.random.random((4, 20))  # 液体质量/体积-时间，气体质量/体积-时间
@@ -80,6 +121,15 @@ async def runfluent(params: Params):
     run_status.to_csv("./run_status.csv", index=False)
 
     return {"message": "计算完成了"}
+@app.post('/txt/', description='')
+async def runfluent(params: Params):
+    data = params.dict()
+    with open('data.txt', 'w') as f:
+        for key in data.keys():
+            line_content = str(key) + ":" + " " + str(data[key]) + "\n"
+    f.write(line_content)
+
+
 
 
 if __name__ == '__main__':
