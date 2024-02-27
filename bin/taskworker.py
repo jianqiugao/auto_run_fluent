@@ -8,10 +8,11 @@ import pandas as pd
 import datetime
 from pydantic import BaseModel
 import os
+import subprocess
 
 from main import main
 from mod.tools.clean_dir import clean_dir
-from lib import config,promts
+from lib import config,promts,parents_path
 
 
 class Params(BaseModel):
@@ -68,22 +69,22 @@ class GeoParams(BaseModel):
     Thickness_of_the_wave_proof_plate: float = 8
     Diameter_of_the_inner_hole_of_the_wave_protection_plate: float = 800
     Boss_height: float = 39
-    Cone_outer_diameter: float = 2000,
-    Inner_ring_diameter: float = 3800,
-    Incision_height_one_side: float =900,
-    Position_of_the_shield_plate: float = 3560,
-    Boss_direction: float = 180,
-    Spherical_radius_of_the_left_head_of_the_shell: float = 4716,
-    Spherical_spherical_center_of_the_left_head_of_the_shell: float = 100,
-    Spherical_radius_of_the_right_head_of_the_shell: float = 4716,
-    Spherical_spherical_center_of_the_right_head_of_the_shell: float = 200,
-    The_left_head_of_the_housing_is_over_rounded_with_a_corner_radius: float = 491,
-    The_right_head_of_the_housing_is_over_fillet_radius: float = 491,
-    Thickness_of_the_shell_barrel_straight_pipe_section: float = 8,
-    The_minimum_size_of_the_polygon_mesh: float = 1,
-    The_maximum_size_of_the_polygon_mesh: float = 40,
-    The_number_of_layers_of_boundaries: float = 5,
-    The_height_of_the_first_layer_of_the_boundary_layer: float = 0.5,
+    Cone_outer_diameter: float = 2000
+    Inner_ring_diameter: float = 3800
+    Incision_height_one_side: float =900
+    Position_of_the_shield_plate: float = 3560
+    Boss_direction: float = 180
+    Spherical_radius_of_the_left_head_of_the_shell: float = 4716
+    Spherical_spherical_center_of_the_left_head_of_the_shell: float = 100
+    Spherical_radius_of_the_right_head_of_the_shell: float = 4716
+    Spherical_spherical_center_of_the_right_head_of_the_shell: float = 200
+    The_left_head_of_the_housing_is_over_rounded_with_a_corner_radius: float = 491
+    The_right_head_of_the_housing_is_over_fillet_radius: float = 491
+    Thickness_of_the_shell_barrel_straight_pipe_section: float = 8
+    The_minimum_size_of_the_polygon_mesh: float = 1
+    The_maximum_size_of_the_polygon_mesh: float = 40
+    The_number_of_layers_of_boundaries: float = 5
+    The_height_of_the_first_layer_of_the_boundary_layer: float = 0.5
     The_maximum_size_of_the_volume_mesh: float = 40
 
 
@@ -122,12 +123,16 @@ async def runfluent(params: Params):
 
     return {"message": "计算完成了"}
 @app.post('/txt/', description='')
-async def runfluent(params: Params):
+async def runfluent(params: GeoParams):
     data = params.dict()
-    with open('data.txt', 'w') as f:
+    # print(data)
+    with open(f'{parents_path}/file/wang/data.txt', 'w') as f:
         for key in data.keys():
             line_content = str(key) + ":" + " " + str(data[key]) + "\n"
-    f.write(line_content)
+            f.write(line_content)
+    bat_file = f'{parents_path}/file/wang/spaceclaim_meshing.bat'
+    result = subprocess.run(["cmd", "/c", bat_file], capture_output=True)
+    print(result)
 
 
 
