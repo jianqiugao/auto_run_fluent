@@ -1,6 +1,9 @@
 import datetime
 import pandas as pd
 import numpy as np
+import sys
+import os
+sys.path.insert(0,os.path.abspath(os.getcwd()+'/..'))
 from lib import promts, config
 from lib.step_0_check_file_system import make_dirs
 from lib.step_1_run_fluent import run_fluent_get_picture_and_data, fluent_data_to_pandas

@@ -7,9 +7,10 @@ import numpy as np
 import pandas as pd
 import datetime
 from pydantic import BaseModel
-import os
 import subprocess
-
+import sys
+import os
+sys.path.insert(0,os.path.abspath(os.getcwd()+'/..'))
 from main import main
 from mod.tools.clean_dir import clean_dir
 from lib import config, promts, parents_path
