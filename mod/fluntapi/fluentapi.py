@@ -91,7 +91,10 @@ def define_boundary_and_models(config, solver):
     walls = solver.setup.boundary_conditions.wall.get_object_names()  # 找到所有的壁面
 
     solver.setup.boundary_conditions.wall['wall-feng-l'].q.value = config['wall-feng-l']
-    solver.setup.boundary_conditions.wall['wall-feng-l:004'].q.value = config['wall-feng-l:004']
+    if 'wall-feng-l-004' in walls:
+        solver.setup.boundary_conditions.wall['wall-feng-l-004'].q.value = config['wall-feng-l:004']
+    else:
+        solver.setup.boundary_conditions.wall['wall-feng-l:004'].q.value = config['wall-feng-l:004']
     solver.setup.boundary_conditions.wall['wall-feng-r'].q.value = config['wall-feng-r']
     solver.setup.boundary_conditions.wall['wall-inpipe'].q.value = config['wall-inpipe']
     solver.setup.boundary_conditions.wall['wall-l'].q.value = config['wall-l']
