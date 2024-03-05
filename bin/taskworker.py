@@ -96,7 +96,7 @@ gas_liquid_time = pd.DataFrame(data=gas_liquid_data, index=['liquid_vol', 'liqui
                                columns=[f't{i}' for i in range(gas_liquid_data.shape[1])])
 # date = datetime.datetime(year=2024, month=2, day=12, hour=12, minute=10, second=20)
 date = datetime.datetime.now()
-mesh = "../run/20240201_215030/fluent_data/chao54-DUIBI.msh"
+mesh = "../file/wang/chao54-DUIBI.msh.h5"
 
 
 @app.post('/runfluent/', description='')
